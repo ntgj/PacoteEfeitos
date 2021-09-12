@@ -1,0 +1,12 @@
+Package: PacoteEfeitos
+Type: Package
+Title: Fornece graficos de probabilidade e porcecentagem de efeitos
+Version: 0.1.0
+Author: Neri Godoy
+Maintainer: Neri Godoy <njunior@estudante.ufscar.br>
+Description: Fornece graficos de probabilidade e porcecentagem de efeitos com base nas matrizes X,y.    Necessário criar vetores In e Fim
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Import: dplyr,matlib,ggplot2,stats
+RoxygenNote: 7.1.2
