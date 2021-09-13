@@ -3,10 +3,9 @@
 #' @param X matrix
 #' @param y vector
 #' @param k numeric variable
-#' @param PC numeric variable
 
 
-Porcentagem <-function(X,y,k,PC){
+Porcentagem <-function(X,y,k){
   Ef<- X[,]
   tEf <- t(Ef)
   b<- inv(tEf%*%Ef)
