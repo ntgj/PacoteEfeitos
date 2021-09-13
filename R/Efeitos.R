@@ -18,7 +18,7 @@ Porcentagem <-function(X,y,k,PC){
   Efeitos <- c(1:length(Efeito))
   Porcentagem <- c(porc[1:length(Efeito),1])
   df <- data.frame(Efeitos,Porcentagem)
-  ggplot(df, aes(x=Efeitos, y=Porcentagem,)) +  geom_bar(stat = "identity",color="Black", fill="Pink") +  theme_classic() + ylab("%")
+  ggplot(df, aes(x=Efeitos, y=Porcentagem,)) +  geom_bar(stat = "identity",color="Black", fill="Pink") +  theme_classic() + ylab("%") + scale_x_continuous(breaks = seq(length(Efeito) by = 1))
 }
 
 #'Cria grafico de probabilidade de efeito
