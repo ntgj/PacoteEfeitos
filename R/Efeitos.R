@@ -6,10 +6,7 @@
 #' @param PC numeric variable
 #' @param t numeric variable
 
-Porcentagem <-function(X,y,k,PC,t){
-  Desvio <- sd(PC)
-  Erro <- 2*Desvio/(3*2^k)^0.5
-  T <- qt((t),k-1)
+Porcentagem <-function(X,y,k,PC){
   Ef<- X[,]
   tEf <- t(Ef)
   b<- inv(tEf%*%Ef)
