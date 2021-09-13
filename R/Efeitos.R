@@ -4,7 +4,7 @@
 #' @param y vector
 #' @param k numeric variable
 #' @param PC numeric variable
-#' @param t numeric variable
+
 
 Porcentagem <-function(X,y,k,PC){
   Ef<- X[,]
