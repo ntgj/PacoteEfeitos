@@ -1,3 +1,4 @@
+#' Funções baseadas na rotina fabi_efeito para Octave.
 #'Cria grafico de porcentagem de efeito
 #' @export
 #' @param X matrix
