@@ -31,7 +31,7 @@ Porcentagem <-function(X,y,k){
 #' @param t numeric variable
 
 
-Probabilidade <- function(X,y,k,PC,t){
+Probabilidade <- function(X,y,k,PC,t=0.975){
   Desvio <- sd(PC)
   Erro <- 2*Desvio/(length(PC)*2^k)^0.5
   T <- qt((t),length(PC)-1)
