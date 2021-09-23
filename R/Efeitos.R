@@ -33,7 +33,7 @@ Porcentagem <-function(X,y,k){
 
 Probabilidade <- function(X,y,k,PC,t){
   Desvio <- sd(PC)
-  Erro <- 2*Desvio/(3*2^k)^0.5
+  Erro <- 2*Desvio/(length(PC)*2^k)^0.5
   T <- qt((t),length(PC)-1)
   Ef<- X[,]
   tEf <- t(Ef)
