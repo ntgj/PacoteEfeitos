@@ -43,7 +43,7 @@ Probabilidade <- function(X,y,k,PC,t=0.975){
   SQ <- sum(Q[1:length(Efeito),])
   porc <- (Efeito^2/(SQ))*100
   
-  seq <- seq(0,length(Efeito))
+  seq <- seq(0,length(Efeito)-1)
 In <- character()
 for (i in seq){
   my_out <- ((i/length(seq-1)))
