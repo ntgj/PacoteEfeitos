@@ -42,8 +42,16 @@ Probabilidade <- function(X,y,k,PC,t=0.975){
   Q <- Efeito^2
   SQ <- sum(Q[1:length(Efeito),])
   porc <- (Efeito^2/(SQ))*100
-  Centro <- c((In+Fim)/2)
-  Centro
+  
+  seq <- seq(0,length(Efeito))
+In <- character()
+for (i in seq){
+  my_out <- ((i/length(seq-1)))
+  In <- c(In, my_out) 
+}
+Fim <- c(In[2:length(In)],as.numeric(last(In))+(1/length(In)))
+Centro <-c((as.numeric(In)+as.numeric(Fim))/2)
+
   #_---------------#
   Z<-qnorm(Centro)
   mydf <- data.frame(Efeito)
