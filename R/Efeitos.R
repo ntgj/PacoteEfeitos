@@ -68,7 +68,7 @@ Centro <-c((as.numeric(In)+as.numeric(Fim))/2)
     geom_label(label=dflabel[,1], size=3.5,color="Green 4") + theme_bw()
 }
 
-#'Regressão
+#'Regressao
 #' @export
 #' @param X matrix
 #' @param y vector
@@ -77,7 +77,6 @@ Centro <-c((as.numeric(In)+as.numeric(Fim))/2)
 
 Regressao <- function(X,y,DF,SSPE){
 
-        
 tX <- t(X)
 Coef<-inv(tX%*%X)%*%(tX%*%y)
 
