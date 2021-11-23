@@ -75,7 +75,7 @@ Centro <-c((as.numeric(In)+as.numeric(Fim))/2)
 #' @param DF numeric variable
 #' @param SSPE numeric variable
 
-Regressão <- function(X,y,DF,SSPE){
+Regressao <- function(X,y,DF,SSPE){
 
         
 tX <- t(X)
