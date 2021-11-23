@@ -67,3 +67,125 @@ Centro <-c((as.numeric(In)+as.numeric(Fim))/2)
     geom_vline(xintercept = 0,color="Blue") +
     geom_label(label=dflabel[,1], size=3.5,color="Green 4") + theme_bw()
 }
+
+#'Regressão
+#' @export
+#' @param X matrix
+#' @param y vector
+#' @param DF numeric variable
+#' @param SSPE numeric variable
+
+Regressao <- function(X,y,DF,SSPE){
+
+tX <- t(X)
+Coef<-inv(tX%*%X)%*%(tX%*%y)
+
+DiagPrincipal <- diag(inv(tX%*%X))
+Pred <- X%*%Coef
+Errors<- (y-Pred)
+n <- ncol(X)
+m <- nrow(X)
+DF <- DF
+
+DFSSreg <- n-1 #DF SSReg
+DFSSres <- m-n #DF SSres
+DFSSTot <- m-1 #DF SSTot
+DFSSPE <- DF #DF SSPE
+DFSSLoF <- (m-n)-DF #DF SSLoF
+
+#ANOVA Pt.1
+SSREG <- sum((Pred-1*(mean(y)))^2)
+SSres <- sum(Errors^2)
+SSTot <- SSREG + SSres
+SSPE <- SSPE
+SSLoF <- SSres - SSPE
+R2 <- SSREG/SSTot
+R2Max <- (SSTot-SSPE)/SSTot
+R <- sqrt(R2)
+RMax <- sqrt(R2Max)
+
+#Anova Pt.2
+#% Mean of Squares
+MSREG <- SSREG/(n-1)
+MSres <- SSres/(m-n)
+MSTot <- SSTot/(m-1)
+MSPE <- SSPE/DF
+MSLoF <- SSLoF/((m-n)-DF)
+
+#% F tests
+Ftest1 <- MSREG/MSres
+F1tab <- qf(0.95,df1=DFSSreg,df2=DFSSres)
+Ftest2 <- MSLoF/MSPE
+F2tab <- qf(.95, df1=DFSSLoF, df2= DFSSPE)
+qvec <- c("-",qt(0.975,n-2),"-","-",qt(0.975,((m-n)-DF)-1),"-","-") # FOR MSRES
+qt(0.975,((m-n)-DF)-1) #FOR MSLOF
+
+
+par(mfrow=c(2,2))
+barplot(MSREG,1,main="MSREG",legend.text=round(MSREG,4),col = rainbow(20),ylim=range(pretty(c(0,MSREG+10))))
+barplot(MSres,1,main="MSres e t",sub=qvec[2],legend.text=round(MSres,4),col="blue", ylim=range(pretty(c(0,MSres+0.5))))
+barplot(MSPE,1,main="MSPE",legend.text=round(MSPE,4),col="green", ylim=range(pretty(c(0,MSPE+0.5))))
+barplot(MSLoF,1,legend.text=round(MSLoF,4),
+        col="black",main="MSLoF e t", sub=qvec[5], ylim=range(pretty(c(0,MSLoF+0.5))))
+
+par(mfrow=c(1,3))
+barplot(Ftest1,1,xlab="F1 Calculado",legend.text=round(Ftest1,4),col="blue", ylim=range(pretty(c(0,Ftest1+10))))
+barplot(F1tab,1,xlab="F1 tabelado",legend.text=round(F1tab,4),col="blue", ylim=range(pretty(c(0,F1tab+10))))
+barplot(Ftest1/F1tab,1,xlab="Calculado/Tabelado",legend.text=round(Ftest1/F1tab,4),col="green", 
+        ylim=range(pretty(c(0,(Ftest1/F1tab)+5)))) + abline(h=10,col="red")
+
+par(mfrow=c(1,3))
+barplot(Ftest2,1,xlab="F2 Calculado",legend.text=round(Ftest2,4),col="purple", ylim=range(pretty(c(0,Ftest2+10))))
+barplot(F2tab,1,xlab="F2 tabelado",legend.text=round(F2tab,4),col="purple", ylim=range(pretty(c(0,F2tab+10))))
+barplot(Ftest2/F2tab,1,xlab="Calculado/Tabelado",legend.text=round(Ftest2/F2tab,4),col="red",
+        ylim=range(pretty(c(0,1)))) + abline(h=1,col="red")
+
+par(mfrow=c(1,2))
+barplot(R2,1,xlab="R²", legend.text=round(R2,4), col="yellow", ylim=range(pretty(c(0,1)))) + abline(h=1,col="red")
+barplot(R2Max, xlab="R²Max", legend.text=round(R2Max,4), col="yellow", ylim=range(pretty(c(0,1)))) + abline(h=1,col="red")
+
+Var <- readline(prompt="Insira o valor da variância")
+
+t <- readline(prompt="Insira o valor de t")
+
+DiagPrincipal<- as.matrix(DiagPrincipal)
+Coef_a <- DiagPrincipal%*%as.numeric(Var)
+Coef_e <- (Coef_a^0.5)*as.numeric(t)
+Coef_e
+Coef_L1 <- DiagPrincipal- Coef_e
+Coef_L2 <- DiagPrincipal+ Coef_e
+Pred_L1 <- X%*%Coef_L1
+Pred_L2 <- X%*%Coef_L2
+Coef1 <- c(DiagPrincipal,Coef,Coef_L1,Coef_L2,Coef_e)
+Pred1 <- cbind(Pred,Pred_L1,Pred_L2,y)
+
+par(mfrow=c(1,1))
+#Experimental x Previsto
+plot(y, Pred, col="Red", xlab="Experimental", ylab="Previsto", 
+     main="Experimental x Previsto",pch=19, ylim = c(min(y),max(y)))
+points(y, Pred + Pred_L1, col="blue1", pch=4)
+points(y, Pred +Pred_L2, col="darkorange4", pch=4)
+reg <- lm(y~Pred)
+abline(reg, col="blue", lwd=2)
+legend("topleft",legend=c("Previsto","Previsto Nível Baixo", "Previsto Nível Alto"),
+       col=c("Red","blue1","darkorange4"), cex=0.5, pch=c(19,4,4),pt.cex=1)
+
+#Histograma erros
+par(mfrow=c(1,2))
+hist(Errors,seq(min(Errors), max(Errors),length.out = 11),xlim=c(min(Errors),max(Errors)),
+     main="Histograma Resíduos", xlab="Resíduos",ylab="Frequência", col="cadetblue3")
+
+#Previsto x Resíduos
+plot(Pred, Errors, col="darkgoldenrod1", main="Previsto x Resíduo", ylab="Resíduos", xlab="Previsto",pch=18)
+abline(h=0, col="brown1")
+
+par(mfrow=c(1,1))
+#Coeficientes
+plot(Coef, pch=15, xlab="", ylab="",main="Coeficientes de Regressão",col="darkgoldenrod1")
+points(Coef +Coef_L1, col="brown1", pch=3)
+points(Coef+Coef_L2, col="blue3", pch=3)
+abline(h=0, col="Red")
+legend("topright",legend=c("Coeficientes","Coeficientes - Intervalo de Confiança", "Coeficientes +Intervalo de Confiança"),
+       col=c("darkgoldenrod1","brown1","blue3"), cex=0.5, pch=c(15,3,3),pt.cex=1)
+return(Coef)
+}
