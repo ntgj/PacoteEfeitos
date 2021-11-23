@@ -77,6 +77,9 @@ Centro <-c((as.numeric(In)+as.numeric(Fim))/2)
 
 Regressao <- function(X,y,DF,SSPE){
 
+X <- as.matrix(X)
+y <- as.matrix(y)  
+  
 tX <- t(X)
 Coef<-inv(tX%*%X)%*%(tX%*%y)
 
