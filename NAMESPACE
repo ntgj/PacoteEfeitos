@@ -2,4 +2,4 @@
 
 export(Porcentagem)
 export(Probabilidade)
-export(Regressa)
+export(Regressao)
