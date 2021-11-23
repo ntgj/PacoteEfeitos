@@ -141,8 +141,8 @@ barplot(Ftest2/F2tab,1,xlab="Calculado/Tabelado",legend.text=round(Ftest2/F2tab,
         ylim=range(pretty(c(0,1)))) + abline(h=1,col="red")
 
 par(mfrow=c(1,2))
-barplot(R2,1,xlab="R²", legend.text=round(R2,4), col="yellow", ylim=range(pretty(c(0,1)))) + abline(h=1,col="red")
-barplot(R2Max, xlab="R²Max", legend.text=round(R2Max,4), col="yellow", ylim=range(pretty(c(0,1)))) + abline(h=1,col="red")
+barplot(R2,1,xlab="R²", legend.text=round(R2,4), col="yellow", ylim=range(pretty(c(0,1))))
+barplot(R2Max, xlab="R²Max", legend.text=round(R2Max,4), col="yellow", ylim=range(pretty(c(0,1))))
 
 Var <- readline(prompt="Insira o valor da variância")
 
@@ -162,7 +162,9 @@ Pred1 <- cbind(Pred,Pred_L1,Pred_L2,y)
 par(mfrow=c(1,1))
 #Experimental x Previsto
 plot(y, Pred, col="Red", xlab="Experimental", ylab="Previsto", 
-     main="Experimental x Previsto",pch=19, ylim = c(min(y),max(y)))
+     main="Experimental x Previsto",pch=19, 
+     ylim = c(min(Pred + Pred_L1),max(Pred + Pred_L2)), xlim = c(min(y),max(y)))
+clip(min(y),max(y),min(Pred),max(Pred))
 points(y, Pred + Pred_L1, col="blue1", pch=4)
 points(y, Pred +Pred_L2, col="darkorange4", pch=4)
 reg <- lm(y~Pred)
@@ -177,11 +179,13 @@ hist(Errors,seq(min(Errors), max(Errors),length.out = 11),xlim=c(min(Errors),max
 
 #Previsto x Resíduos
 plot(Pred, Errors, col="darkgoldenrod1", main="Previsto x Resíduo", ylab="Resíduos", xlab="Previsto",pch=18)
+clip(min(Pred),max(Pred),min(Errors),max(Errors))
 abline(h=0, col="brown1")
 
 par(mfrow=c(1,1))
 #Coeficientes
 plot(Coef, pch=15, xlab="", ylab="",main="Coeficientes de Regressão",col="darkgoldenrod1")
+clip(1,length(Coef),min(Coef),max(Coef))
 points(Coef +Coef_L1, col="brown1", pch=3)
 points(Coef+Coef_L2, col="blue3", pch=3)
 abline(h=0, col="Red")
