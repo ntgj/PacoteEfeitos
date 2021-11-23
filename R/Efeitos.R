@@ -75,11 +75,12 @@ Centro <-c((as.numeric(In)+as.numeric(Fim))/2)
 #' @param DF numeric variable
 #' @param SSPE numeric variable
 
-Regressao <- function(X,y,DF,SSPE){
+Regressão <- function(X,y,DF,SSPE){
 
 X <- as.matrix(X)
-y <- as.matrix(y)  
-  
+y <- as.matrix(y)
+        
+        
 tX <- t(X)
 Coef<-inv(tX%*%X)%*%(tX%*%y)
 
@@ -166,14 +167,16 @@ par(mfrow=c(1,1))
 #Experimental x Previsto
 plot(y, Pred, col="Red", xlab="Experimental", ylab="Previsto", 
      main="Experimental x Previsto",pch=19, 
-     ylim = c(min(Pred + Pred_L1),max(Pred + Pred_L2)), xlim = c(min(y),max(y)))
-clip(min(y),max(y),min(Pred),max(Pred))
+     ylim = c(min(0.5*Pred),max(1.25*Pred)), xlim = c(min(y),max(y)))
+
 points(y, Pred + Pred_L1, col="blue1", pch=4)
 points(y, Pred +Pred_L2, col="darkorange4", pch=4)
 reg <- lm(y~Pred)
-abline(reg, col="blue", lwd=2)
-legend("topleft",legend=c("Previsto","Previsto Nível Baixo", "Previsto Nível Alto"),
+legend("bottomright",legend=c("Previsto","Previsto Nível Baixo", "Previsto Nível Alto"),
        col=c("Red","blue1","darkorange4"), cex=0.5, pch=c(19,4,4),pt.cex=1)
+clip(min(y),max(y),min(Pred + Pred_L1),max(Pred + Pred_L2))
+abline(reg, col="blue", lwd=2)
+
 
 #Histograma erros
 par(mfrow=c(1,2))
