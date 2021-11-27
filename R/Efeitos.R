@@ -77,6 +77,10 @@ Centro <-c((as.numeric(In)+as.numeric(Fim))/2)
 
 Regressao <- function(X,y,DF,SSPE){
 
+X <- as.matrix(X)
+y <- as.matrix(y)
+        
+        
 tX <- t(X)
 Coef<-inv(tX%*%X)%*%(tX%*%y)
 
@@ -93,7 +97,6 @@ DFSSTot <- m-1 #DF SSTot
 DFSSPE <- DF #DF SSPE
 DFSSLoF <- (m-n)-DF #DF SSLoF
 
-#ANOVA Pt.1
 SSREG <- sum((Pred-1*(mean(y)))^2)
 SSres <- sum(Errors^2)
 SSTot <- SSREG + SSres
@@ -104,20 +107,20 @@ R2Max <- (SSTot-SSPE)/SSTot
 R <- sqrt(R2)
 RMax <- sqrt(R2Max)
 
-#Anova Pt.2
-#% Mean of Squares
+
+#Mean of Squares
 MSREG <- SSREG/(n-1)
 MSres <- SSres/(m-n)
 MSTot <- SSTot/(m-1)
 MSPE <- SSPE/DF
 MSLoF <- SSLoF/((m-n)-DF)
 
-#% F tests
+#F tests
 Ftest1 <- MSREG/MSres
 F1tab <- qf(0.95,df1=DFSSreg,df2=DFSSres)
 Ftest2 <- MSLoF/MSPE
 F2tab <- qf(.95, df1=DFSSLoF, df2= DFSSPE)
-qvec <- c("-",qt(0.975,n-2),"-","-",qt(0.975,((m-n)-DF)-1),"-","-") # FOR MSRES
+qvec <- c("-",qt(0.975,(m-n)-1),"-","-",qt(0.975,((m-n)-DF)-1),"-","-") # FOR MSRES
 qt(0.975,((m-n)-DF)-1) #FOR MSLOF
 
 
@@ -152,21 +155,19 @@ DiagPrincipal<- as.matrix(DiagPrincipal)
 Coef_a <- DiagPrincipal%*%as.numeric(Var)
 Coef_e <- (Coef_a^0.5)*as.numeric(t)
 Coef_e
-Coef_L1 <- DiagPrincipal- Coef_e
-Coef_L2 <- DiagPrincipal+ Coef_e
+Coef_L1 <- Coef - Coef_e
+Coef_L2 <- Coef+ Coef_e
 Pred_L1 <- X%*%Coef_L1
 Pred_L2 <- X%*%Coef_L2
-Coef1 <- c(DiagPrincipal,Coef,Coef_L1,Coef_L2,Coef_e)
-Pred1 <- cbind(Pred,Pred_L1,Pred_L2,y)
 
 par(mfrow=c(1,1))
 #Experimental x Previsto
 plot(y, Pred, col="Red", xlab="Experimental", ylab="Previsto", 
      main="Experimental x Previsto",pch=19, 
-     ylim = c(min(0.5*Pred),max(1.25*Pred)), xlim = c(min(y),max(y)))
+     ylim = c(min(Pred_L1),max(Pred_L2)), xlim = c(min(y),max(y)))
 
-points(y, Pred + Pred_L1, col="blue1", pch=4)
-points(y, Pred +Pred_L2, col="darkorange4", pch=4)
+points(y, Pred_L1, col="blue1", pch=4)
+points(y, Pred_L2, col="darkorange4", pch=4)
 reg <- lm(y~Pred)
 legend("bottomright",legend=c("Previsto","Previsto Nível Baixo", "Previsto Nível Alto"),
        col=c("Red","blue1","darkorange4"), cex=0.5, pch=c(19,4,4),pt.cex=1)
@@ -186,12 +187,12 @@ abline(h=0, col="brown1")
 
 par(mfrow=c(1,1))
 #Coeficientes
-plot(Coef, pch=15, xlab="", ylab="",main="Coeficientes de Regressão",col="darkgoldenrod1")
-clip(1,length(Coef),min(Coef),max(Coef))
-points(Coef +Coef_L1, col="brown1", pch=3)
-points(Coef+Coef_L2, col="blue3", pch=3)
+plot(Coef, pch=15, xlab="", ylab="",ylim=c(min(1.25*Coef),max(1.25*Coef)),main="Coeficientes de Regressão",col="darkgoldenrod1")
+clip(1,length(Coef),min(2*Coef_L1),max(2*Coef_L2))
+points(Coef_L1, col="brown1", pch=3)
+points(Coef_L2, col="blue3", pch=3)
 abline(h=0, col="Red")
 legend("topright",legend=c("Coeficientes","Coeficientes - Intervalo de Confiança", "Coeficientes +Intervalo de Confiança"),
        col=c("darkgoldenrod1","brown1","blue3"), cex=0.5, pch=c(15,3,3),pt.cex=1)
-return(Coef)
+return(list(Coef, Coef_L1, Coef_L2, Coef_e))
 }
