@@ -75,7 +75,7 @@ Centro <-c((as.numeric(In)+as.numeric(Fim))/2)
 #' @param DF numeric variable
 #' @param SSPE numeric variable
 
-Regressao <- function(X,y,DF,SSPE){
+Regressão <- function(X,y,DF,SSPE){
 
 X <- as.matrix(X)
 y <- as.matrix(y)
@@ -141,7 +141,7 @@ par(mfrow=c(1,3))
 barplot(Ftest2,1,xlab="F2 Calculado",legend.text=round(Ftest2,4),col="purple", ylim=range(pretty(c(0,Ftest2+10))))
 barplot(F2tab,1,xlab="F2 tabelado",legend.text=round(F2tab,4),col="purple", ylim=range(pretty(c(0,F2tab+10))))
 barplot(Ftest2/F2tab,1,xlab="Calculado/Tabelado",legend.text=round(Ftest2/F2tab,4),col="red",
-        ylim=range(pretty(c(0,1)))) + abline(h=1,col="red")
+        ylim=range(pretty(c(0,(Ftest2/F2tab)+0.5)))) + abline(h=1,col="red")
 
 par(mfrow=c(1,2))
 barplot(R2,1,xlab="R²", legend.text=round(R2,4), col="yellow", ylim=range(pretty(c(0,1))))
@@ -164,7 +164,7 @@ par(mfrow=c(1,1))
 #Experimental x Previsto
 plot(y, Pred, col="Red", xlab="Experimental", ylab="Previsto", 
      main="Experimental x Previsto",pch=19, 
-     ylim = c(min(Pred_L1),max(Pred_L2)), xlim = c(min(y),max(y)))
+     ylim = c(min(Pred_L1*1.05),max(Pred_L2*1.05)), xlim = c(min(y),max(y)))
 
 points(y, Pred_L1, col="blue1", pch=4)
 points(y, Pred_L2, col="darkorange4", pch=4)
@@ -188,9 +188,9 @@ abline(h=0, col="brown1")
 par(mfrow=c(1,1))
 #Coeficientes
 plot(Coef, pch=15, xlab="", ylab="",ylim=c(min(1.25*Coef),max(1.25*Coef)),main="Coeficientes de Regressão",col="darkgoldenrod1")
-clip(1,length(Coef),min(2*Coef_L1),max(2*Coef_L2))
 points(Coef_L1, col="brown1", pch=3)
 points(Coef_L2, col="blue3", pch=3)
+clip(1,length(Coef),min(2*Coef_L1),max(2*Coef_L2))
 abline(h=0, col="Red")
 legend("topright",legend=c("Coeficientes","Coeficientes - Intervalo de Confiança", "Coeficientes +Intervalo de Confiança"),
        col=c("darkgoldenrod1","brown1","blue3"), cex=0.5, pch=c(15,3,3),pt.cex=1)
