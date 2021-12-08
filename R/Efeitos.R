@@ -194,5 +194,6 @@ clip(1,length(Coef),min(2*Coef_L1),max(2*Coef_L2))
 abline(h=0, col="Red")
 legend("topright",legend=c("Coeficientes","Coeficientes - Intervalo de Confiança", "Coeficientes +Intervalo de Confiança"),
        col=c("darkgoldenrod1","brown1","blue3"), cex=0.5, pch=c(15,3,3),pt.cex=1)
-return(list(Coef, Coef_L1, Coef_L2, Coef_e))
+  Coeficientes <- cbind(Coef, Coef_L1, Coef_L2, Coef_e)
+return(cbind(Coef, Coef_L1, Coef_L2, Coef_e))
 }
