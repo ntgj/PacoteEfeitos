@@ -195,6 +195,6 @@ abline(h=0, col="Red")
 legend("topright",legend=c("Coeficientes","Coeficientes - Intervalo de Confiança", "Coeficientes +Intervalo de Confiança"),
        col=c("darkgoldenrod1","brown1","blue3"), cex=0.5, pch=c(15,3,3),pt.cex=1)
   Coeficientes <- cbind(Coef, Coef_L1, Coef_L2, Coef_e)
-  colnames(Coeficientes) <- c("Coeficientes","-","+","IC"
+  colnames(Coeficientes) <- c("Coeficientes","-","+","IC")
 return(Coeficientes)
 }
