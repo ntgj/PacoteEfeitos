@@ -187,7 +187,7 @@ abline(h=0, col="brown1")
 
 par(mfrow=c(1,1))
 #Coeficientes
-plot(Coef, pch=15, xlab="", ylab="",ylim=c(min(1.25*Coef),max(1.25*Coef)),main="Coeficientes de Regressão",col="darkgoldenrod1")
+plot(Coef, pch=15, xlab="", ylab="",ylim=c(min(1.25*Coef_L1),max(1.25*Coef_L2)),main="Coeficientes de Regressão",col="darkgoldenrod1")
 points(Coef_L1, col="brown1", pch=3)
 points(Coef_L2, col="blue3", pch=3)
 clip(1,length(Coef),min(2*Coef_L1),max(2*Coef_L2))
