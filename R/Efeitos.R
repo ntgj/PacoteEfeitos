@@ -62,7 +62,7 @@ Centro <-c((as.numeric(In)+as.numeric(Fim))/2)
   dflabel <- dflabel%>%arrange((+Efeito))
   #------------------------#
   ICE <- Erro*T
-  ggplot(data = dfprobabilidade, aes_string(x = "Efeito", y = "Z")) +
+  ggplot(data = dfprobabilidade, aes_string(x = "Magnitude de Efeito", y = "Z")) +
     geom_vline(xintercept = ICE, color="Red") + geom_vline(xintercept = -ICE,color="Red") +
     geom_vline(xintercept = 0,color="Blue") +
     geom_label(label=dflabel[,1], size=3.5,color="Green 4") + theme_bw()
