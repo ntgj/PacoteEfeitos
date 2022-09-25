@@ -170,7 +170,7 @@ points(y, Pred_L1, col="blue1", pch=4)
 points(y, Pred_L2, col="darkorange4", pch=4)
 reg <- lm(y~Pred)
 legend("bottomright",legend=c("Previsto","Previsto Nível Baixo", "Previsto Nível Alto"),
-       col=c("Red","blue1","darkorange4"), cex=0.5, pch=c(19,4,4),pt.cex=1)
+       col=c("Red","blue1","darkorange4"), cex=1.5, pch=c(19,4,4),pt.cex=1)
 clip(min(y),max(y),min(Pred + Pred_L1),max(Pred + Pred_L2))
 abline(reg, col="blue", lwd=2)
 
